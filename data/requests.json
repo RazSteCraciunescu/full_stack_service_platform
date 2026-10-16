@@ -1,0 +1,222 @@
+[
+  {
+    "id": "SR-1042",
+    "title": "Password reset email never arrives",
+    "description": "Customers can request a password reset, but the message is not delivered for accounts created before the latest email-template update.",
+    "category": "Account",
+    "priority": "High",
+    "status": "In Progress",
+    "requester": {
+      "name": "Mia Carter",
+      "email": "mia.carter@example.test"
+    },
+    "assignee": "Jordan Lee",
+    "channel": "Portal",
+    "createdAt": "2026-08-24T09:18:00.000Z",
+    "updatedAt": "2026-08-29T13:42:00.000Z",
+    "dueAt": "2026-08-30T17:00:00.000Z",
+    "tags": [
+      "email",
+      "authentication"
+    ],
+    "satisfaction": null,
+    "comments": [
+      {
+        "id": "C-2101",
+        "author": "Jordan Lee",
+        "body": "Reproduced with one migrated account. Checking the queue payload next.",
+        "createdAt": "2026-08-29T13:42:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "SR-1041",
+    "title": "Invoice PDF shows the previous office address",
+    "description": "The billing page is correct, but newly generated invoice PDFs still use the address from the retired template.",
+    "category": "Billing",
+    "priority": "Medium",
+    "status": "Waiting",
+    "requester": {
+      "name": "Theo Martin",
+      "email": "theo.martin@example.test"
+    },
+    "assignee": "Priya Shah",
+    "channel": "Email",
+    "createdAt": "2026-08-25T11:06:00.000Z",
+    "updatedAt": "2026-08-28T15:20:00.000Z",
+    "dueAt": "2026-09-01T12:00:00.000Z",
+    "tags": [
+      "pdf",
+      "invoice"
+    ],
+    "satisfaction": null,
+    "comments": [
+      {
+        "id": "C-2098",
+        "author": "Priya Shah",
+        "body": "Asked for one affected invoice number so the template path can be confirmed.",
+        "createdAt": "2026-08-28T15:20:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "SR-1040",
+    "title": "Mobile menu covers the request search field",
+    "description": "At widths below 390 pixels, opening the navigation drawer prevents the search input from receiving pointer events.",
+    "category": "Usability",
+    "priority": "Medium",
+    "status": "Open",
+    "requester": {
+      "name": "Nora White",
+      "email": "nora.white@example.test"
+    },
+    "assignee": null,
+    "channel": "Portal",
+    "createdAt": "2026-08-27T07:55:00.000Z",
+    "updatedAt": "2026-08-27T07:55:00.000Z",
+    "dueAt": "2026-09-02T10:00:00.000Z",
+    "tags": [
+      "responsive",
+      "navigation"
+    ],
+    "satisfaction": null,
+    "comments": []
+  },
+  {
+    "id": "SR-1039",
+    "title": "CSV export drops Romanian diacritics",
+    "description": "Names containing ă, â, î, ș or ț are replaced by question marks when the report is opened in a spreadsheet application.",
+    "category": "Data Export",
+    "priority": "High",
+    "status": "In Progress",
+    "requester": {
+      "name": "Elena Pop",
+      "email": "elena.pop@example.test"
+    },
+    "assignee": "Sam Brooks",
+    "channel": "API",
+    "createdAt": "2026-08-22T14:30:00.000Z",
+    "updatedAt": "2026-08-29T08:10:00.000Z",
+    "dueAt": "2026-08-29T16:00:00.000Z",
+    "tags": [
+      "csv",
+      "encoding",
+      "i18n"
+    ],
+    "satisfaction": null,
+    "comments": [
+      {
+        "id": "C-2087",
+        "author": "Sam Brooks",
+        "body": "The API response is UTF-8. The missing BOM appears to be the spreadsheet compatibility issue.",
+        "createdAt": "2026-08-29T08:10:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "SR-1038",
+    "title": "Add a compact dark theme to the customer portal",
+    "description": "A theme switch would help users working in low-light environments. The preference should persist between sessions.",
+    "category": "Feature Request",
+    "priority": "Low",
+    "status": "Backlog",
+    "requester": {
+      "name": "Alex Kim",
+      "email": "alex.kim@example.test"
+    },
+    "assignee": null,
+    "channel": "Portal",
+    "createdAt": "2026-08-21T10:12:00.000Z",
+    "updatedAt": "2026-08-21T10:12:00.000Z",
+    "dueAt": null,
+    "tags": [
+      "theme",
+      "accessibility"
+    ],
+    "satisfaction": null,
+    "comments": []
+  },
+  {
+    "id": "SR-1037",
+    "title": "Status page link returns a 404",
+    "description": "The footer still links to the retired status URL instead of the current service-status page.",
+    "category": "Documentation",
+    "priority": "Low",
+    "status": "Resolved",
+    "requester": {
+      "name": "Robin Evans",
+      "email": "robin.evans@example.test"
+    },
+    "assignee": "Jordan Lee",
+    "channel": "Portal",
+    "createdAt": "2026-08-20T16:48:00.000Z",
+    "updatedAt": "2026-08-21T09:24:00.000Z",
+    "dueAt": "2026-08-23T17:00:00.000Z",
+    "tags": [
+      "link",
+      "footer"
+    ],
+    "satisfaction": 5,
+    "comments": [
+      {
+        "id": "C-2074",
+        "author": "Jordan Lee",
+        "body": "Footer link updated and verified on desktop and mobile layouts.",
+        "createdAt": "2026-08-21T09:24:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "SR-1036",
+    "title": "Reassignment sends two notification emails",
+    "description": "Moving a request from one owner to another triggers both the old and new notification handlers.",
+    "category": "Notifications",
+    "priority": "High",
+    "status": "Resolved",
+    "requester": {
+      "name": "Jamie Cole",
+      "email": "jamie.cole@example.test"
+    },
+    "assignee": "Priya Shah",
+    "channel": "Email",
+    "createdAt": "2026-08-18T08:41:00.000Z",
+    "updatedAt": "2026-08-22T12:06:00.000Z",
+    "dueAt": "2026-08-21T17:00:00.000Z",
+    "tags": [
+      "email",
+      "workflow"
+    ],
+    "satisfaction": 4,
+    "comments": [
+      {
+        "id": "C-2063",
+        "author": "Priya Shah",
+        "body": "Removed the duplicate event subscription and added a regression check.",
+        "createdAt": "2026-08-22T12:06:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": "SR-1035",
+    "title": "Attachment upload stops at five megabytes",
+    "description": "The form advertises a ten-megabyte limit, but uploads between five and ten megabytes fail before reaching the API.",
+    "category": "Attachments",
+    "priority": "Medium",
+    "status": "Open",
+    "requester": {
+      "name": "Lea Novak",
+      "email": "lea.novak@example.test"
+    },
+    "assignee": "Sam Brooks",
+    "channel": "Portal",
+    "createdAt": "2026-08-26T18:02:00.000Z",
+    "updatedAt": "2026-08-26T18:02:00.000Z",
+    "dueAt": "2026-09-01T17:00:00.000Z",
+    "tags": [
+      "upload",
+      "configuration"
+    ],
+    "satisfaction": null,
+    "comments": []
+  }
+]

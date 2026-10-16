@@ -1,0 +1,320 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Service Request Platform API",
+    "version": "1.0.0",
+    "description": "REST contract shared by the browser clients and backend examples."
+  },
+  "servers": [
+    { "url": "http://127.0.0.1:4174", "description": "Local Node API" }
+  ],
+  "tags": [
+    { "name": "System" },
+    { "name": "Requests" },
+    { "name": "Reporting" },
+    { "name": "Knowledge" }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": ["System"],
+        "summary": "Check service health",
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "Healthy service",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["status", "service", "storage", "time", "requestId"],
+                  "properties": {
+                    "status": { "type": "string", "const": "ok" },
+                    "service": { "type": "string" },
+                    "storage": { "type": "string" },
+                    "time": { "type": "string", "format": "date-time" },
+                    "requestId": { "type": "string", "format": "uuid" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/requests": {
+      "get": {
+        "tags": ["Requests"],
+        "summary": "List and filter requests",
+        "operationId": "listRequests",
+        "parameters": [
+          { "name": "q", "in": "query", "schema": { "type": "string" } },
+          { "name": "status", "in": "query", "schema": { "$ref": "#/components/schemas/Status" } },
+          { "name": "priority", "in": "query", "schema": { "$ref": "#/components/schemas/Priority" } },
+          { "name": "category", "in": "query", "schema": { "$ref": "#/components/schemas/Category" } },
+          { "name": "assignee", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Filtered requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["items", "total"],
+                  "properties": {
+                    "items": { "type": "array", "items": { "$ref": "#/components/schemas/ServiceRequest" } },
+                    "total": { "type": "integer", "minimum": 0 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Requests"],
+        "summary": "Create a request",
+        "operationId": "createRequest",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateRequest" },
+              "examples": {
+                "portal": {
+                  "value": {
+                    "title": "Export report is missing owner column",
+                    "description": "The monthly export omits the owner column for requests that were closed last week.",
+                    "category": "Data Export",
+                    "priority": "Medium",
+                    "requester": { "name": "Alex Morgan", "email": "alex.morgan@example.test" },
+                    "tags": ["csv", "reporting"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "$ref": "#/components/responses/RequestResponse" },
+          "422": { "$ref": "#/components/responses/ValidationProblem" }
+        }
+      }
+    },
+    "/api/requests/{requestId}": {
+      "parameters": [
+        { "name": "requestId", "in": "path", "required": true, "schema": { "type": "string", "pattern": "^SR-[0-9]+$" } }
+      ],
+      "get": {
+        "tags": ["Requests"],
+        "summary": "Get one request",
+        "operationId": "getRequest",
+        "responses": {
+          "200": { "$ref": "#/components/responses/RequestResponse" },
+          "404": { "$ref": "#/components/responses/NotFoundProblem" }
+        }
+      },
+      "patch": {
+        "tags": ["Requests"],
+        "summary": "Update workflow fields",
+        "operationId": "updateRequest",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UpdateRequest" } } }
+        },
+        "responses": {
+          "200": { "$ref": "#/components/responses/RequestResponse" },
+          "404": { "$ref": "#/components/responses/NotFoundProblem" },
+          "422": { "$ref": "#/components/responses/ValidationProblem" }
+        }
+      }
+    },
+    "/api/requests/{requestId}/comments": {
+      "parameters": [
+        { "name": "requestId", "in": "path", "required": true, "schema": { "type": "string", "pattern": "^SR-[0-9]+$" } }
+      ],
+      "post": {
+        "tags": ["Requests"],
+        "summary": "Add a request comment",
+        "operationId": "addComment",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateComment" } } }
+        },
+        "responses": {
+          "201": {
+            "description": "Created comment",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Comment" } } }
+          },
+          "404": { "$ref": "#/components/responses/NotFoundProblem" },
+          "422": { "$ref": "#/components/responses/ValidationProblem" }
+        }
+      }
+    },
+    "/api/metrics": {
+      "get": {
+        "tags": ["Reporting"],
+        "summary": "Get current service metrics",
+        "operationId": "getMetrics",
+        "responses": {
+          "200": {
+            "description": "Current metrics",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Metrics" } } }
+          }
+        }
+      }
+    },
+    "/api/knowledge-articles": {
+      "get": {
+        "tags": ["Knowledge"],
+        "summary": "List knowledge articles",
+        "operationId": "listKnowledgeArticles",
+        "responses": { "200": { "description": "Knowledge article collection" } }
+      }
+    },
+    "/api/demo/reset": {
+      "post": {
+        "tags": ["System"],
+        "summary": "Restore deterministic seed data",
+        "operationId": "resetDemo",
+        "responses": { "200": { "description": "Seed data restored" } }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "RequestResponse": {
+        "description": "Service request",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ServiceRequest" } } }
+      },
+      "ValidationProblem": {
+        "description": "Validation failed",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Problem" } } }
+      },
+      "NotFoundProblem": {
+        "description": "Request not found",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Problem" } } }
+      }
+    },
+    "schemas": {
+      "Status": { "type": "string", "enum": ["Backlog", "Open", "In Progress", "Waiting", "Resolved", "Closed"] },
+      "Priority": { "type": "string", "enum": ["Low", "Medium", "High", "Urgent"] },
+      "Category": { "type": "string", "enum": ["Account", "Attachments", "Billing", "Data Export", "Documentation", "Feature Request", "Notifications", "Usability"] },
+      "Requester": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "email"],
+        "properties": {
+          "name": { "type": "string", "minLength": 2, "maxLength": 80 },
+          "email": { "type": "string", "format": "email", "maxLength": 254 }
+        }
+      },
+      "Comment": {
+        "type": "object",
+        "required": ["id", "author", "body", "createdAt"],
+        "properties": {
+          "id": { "type": "string" },
+          "author": { "type": "string" },
+          "body": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "ServiceRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "description", "category", "priority", "status", "requester", "assignee", "channel", "createdAt", "updatedAt", "dueAt", "tags", "satisfaction", "comments"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^SR-[0-9]+$", "examples": ["SR-1042"] },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "category": { "$ref": "#/components/schemas/Category" },
+          "priority": { "$ref": "#/components/schemas/Priority" },
+          "status": { "$ref": "#/components/schemas/Status" },
+          "requester": { "$ref": "#/components/schemas/Requester" },
+          "assignee": { "type": ["string", "null"] },
+          "channel": { "type": "string", "enum": ["Portal", "Email", "API"] },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "dueAt": { "type": ["string", "null"], "format": "date-time" },
+          "tags": { "type": "array", "items": { "type": "string" }, "maxItems": 8 },
+          "satisfaction": { "type": ["number", "null"], "minimum": 1, "maximum": 5 },
+          "comments": { "type": "array", "items": { "$ref": "#/components/schemas/Comment" } }
+        }
+      },
+      "CreateRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "description", "category", "priority", "requester"],
+        "properties": {
+          "title": { "type": "string", "minLength": 8, "maxLength": 120 },
+          "description": { "type": "string", "minLength": 20, "maxLength": 2000 },
+          "category": { "$ref": "#/components/schemas/Category" },
+          "priority": { "$ref": "#/components/schemas/Priority" },
+          "channel": { "type": "string", "enum": ["Portal", "Email", "API"], "default": "Portal" },
+          "requester": { "$ref": "#/components/schemas/Requester" },
+          "tags": { "type": "array", "maxItems": 8, "items": { "type": "string", "maxLength": 30 } }
+        }
+      },
+      "UpdateRequest": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "properties": {
+          "status": { "$ref": "#/components/schemas/Status" },
+          "priority": { "$ref": "#/components/schemas/Priority" },
+          "assignee": { "type": ["string", "null"], "maxLength": 80 },
+          "dueAt": { "type": ["string", "null"], "format": "date-time" },
+          "tags": { "type": "array", "maxItems": 8, "items": { "type": "string", "maxLength": 30 } }
+        }
+      },
+      "CreateComment": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["author", "body"],
+        "properties": {
+          "author": { "type": "string", "minLength": 2, "maxLength": 80 },
+          "body": { "type": "string", "minLength": 2, "maxLength": 1000 }
+        }
+      },
+      "Metrics": {
+        "type": "object",
+        "required": ["total", "active", "unassigned", "resolved", "atRisk", "resolutionRate", "averageSatisfaction", "byStatus", "byPriority", "byCategory"],
+        "properties": {
+          "total": { "type": "integer" },
+          "active": { "type": "integer" },
+          "unassigned": { "type": "integer" },
+          "resolved": { "type": "integer" },
+          "atRisk": { "type": "integer" },
+          "resolutionRate": { "type": "number" },
+          "averageSatisfaction": { "type": ["number", "null"] },
+          "byStatus": { "type": "object", "additionalProperties": { "type": "integer" } },
+          "byPriority": { "type": "object", "additionalProperties": { "type": "integer" } },
+          "byCategory": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["category", "count"],
+              "properties": { "category": { "type": "string" }, "count": { "type": "integer" } }
+            }
+          }
+        }
+      },
+      "Problem": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": ["code", "message"],
+            "properties": {
+              "code": { "type": "string" },
+              "message": { "type": "string" },
+              "details": { "type": "object", "additionalProperties": true }
+            }
+          }
+        }
+      }
+    }
+  }
+}

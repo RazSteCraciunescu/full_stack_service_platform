@@ -1,0 +1,32 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '22.x'
+    displayName: Use Node.js 22
+
+  - script: npm install --no-audit --no-fund
+    displayName: Install development dependencies
+
+  - script: npm run qa
+    displayName: Build and run the core quality gate
+
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)'
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: '$(Build.ArtifactStagingDirectory)/service-portal-$(Build.BuildId).zip'
+      replaceExistingArchive: true
+    displayName: Package repository
+
+  - publish: '$(Build.ArtifactStagingDirectory)/service-portal-$(Build.BuildId).zip'
+    artifact: service-portal
+    displayName: Publish build artifact

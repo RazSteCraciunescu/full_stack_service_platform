@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Web Fundamentals · Service Portal</title>
+  <link rel="stylesheet" href="/fundamentals/styles.css" />
+  <script src="/fundamentals/app.js" defer></script>
+</head>
+<body>
+  <header class="site-header"><a href="/">Service Portal</a><nav aria-label="Page sections"><a href="#requests">Requests</a><a href="#notes">Notes</a></nav></header>
+  <main>
+    <section class="intro"><div><p>HTML · CSS/SASS · JAVASCRIPT</p><h1>A no-framework request list</h1><span>This small client focuses on semantic markup, responsive layout and DOM APIs.</span></div><button id="themeButton" type="button" aria-pressed="false">Use dark theme</button></section>
+    <section id="requests" class="request-section" aria-labelledby="requestTitle">
+      <div class="section-heading"><div><p>LIVE API DATA</p><h2 id="requestTitle">Open work</h2></div><label>Filter <input id="filterInput" type="search" placeholder="Type a keyword" /></label></div>
+      <div id="requestCards" class="request-cards" aria-live="polite"><p>Loading requests…</p></div>
+    </section>
+    <section id="notes" class="notes"><h2>What this page demonstrates</h2><ul><li>Landmarks, labels and useful heading order</li><li>CSS custom properties, Grid and responsive breakpoints</li><li>Sass source split into tokens, components and the page entry file</li><li>Fetch, array methods, events, localStorage and safe text rendering</li></ul></section>
+  </main>
+  <footer><span>Local full-stack study project</span><a href="/api-docs.html">API guide</a></footer>
+</body>
+</html>

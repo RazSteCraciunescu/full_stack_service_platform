@@ -1,0 +1,33 @@
+{
+  "name": "full-stack-service-request-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A multi-client service request application and practical full-stack development workspace.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "npm run build && node --watch dist/server/src/server.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint:js": "node scripts/check-js-syntax.mjs",
+    "lint:php": "php scripts/check-php-syntax.php",
+    "qa": "npm run build && npm run validate && npm run lint:js && npm test && npm run lint:php && npm run test:php && npm run test:python",
+    "smoke": "python scripts/smoke_test.py",
+    "start": "node dist/server/src/server.js",
+    "test": "node --test tests/node/*.test.js",
+    "test:coverage": "node --experimental-test-coverage --test tests/node/*.test.js",
+    "test:e2e": "playwright test",
+    "test:php": "php services/php-webhook/tests/validator_test.php",
+    "test:python": "python scripts/run_python_tests.py",
+    "validate": "node scripts/validate-project.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "prettier": "^3.5.3",
+    "sass": "^1.103.1",
+    "typescript": "^5.8.3"
+  }
+}

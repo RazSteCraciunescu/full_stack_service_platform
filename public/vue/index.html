@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vue Analytics · Service Portal</title>
+  <link rel="stylesheet" href="/vue/styles.css" />
+  <script src="/vendor/vue.global.js"></script>
+  <script src="/vue/app.js" defer></script>
+</head>
+<body>
+  <div id="app" v-cloak>
+    <header class="vue-header">
+      <div><a href="/">Service Portal</a><span>/ Vue analytics</span></div>
+      <button @click="reload" :disabled="loading">{{ loading ? 'Refreshing…' : 'Refresh data' }}</button>
+    </header>
+    <main>
+      <section class="hero">
+        <p>VUE 3 CLIENT</p>
+        <h1>Queue analytics</h1>
+        <span>A read-only dashboard consuming the same REST endpoints as the main application.</span>
+      </section>
+      <p v-if="error" class="error">{{ error }}</p>
+      <section class="vue-metrics" aria-label="Queue metrics">
+        <article><span>Total</span><strong>{{ metrics.total ?? '—' }}</strong></article>
+        <article><span>Active</span><strong>{{ metrics.active ?? '—' }}</strong></article>
+        <article><span>At risk</span><strong>{{ metrics.atRisk ?? '—' }}</strong></article>
+        <article><span>Resolved</span><strong>{{ metrics.resolved ?? '—' }}</strong></article>
+      </section>
+      <div class="vue-grid">
+        <section class="vue-panel">
+          <div class="panel-title"><div><p>BREAKDOWN</p><h2>Requests by status</h2></div><span>{{ metrics.total || 0 }} total</span></div>
+          <div class="donut-row">
+            <div class="donut" :style="donutStyle"><span>{{ metrics.resolutionRate || 0 }}%</span><small>resolved</small></div>
+            <ul><li v-for="row in statusRows" :key="row.name"><i :style="{background: row.color}"></i><span>{{ row.name }}</span><strong>{{ row.value }}</strong></li></ul>
+          </div>
+        </section>
+        <section class="vue-panel">
+          <div class="panel-title"><div><p>CATEGORIES</p><h2>Current workload</h2></div></div>
+          <div class="category-bars"><div v-for="row in metrics.byCategory || []" :key="row.category"><span>{{ row.category }}</span><i><b :style="{width: barWidth(row.count)}"></b></i><strong>{{ row.count }}</strong></div></div>
+        </section>
+      </div>
+      <section class="vue-panel request-list">
+        <div class="panel-title"><div><p>RECENT</p><h2>Latest activity</h2></div><input v-model="query" type="search" placeholder="Filter requests" aria-label="Filter recent requests" /></div>
+        <article v-for="item in filteredRequests" :key="item.id"><div><strong>{{ item.title }}</strong><span>{{ item.id }} · {{ item.category }}</span></div><span :class="['pill', item.status.toLowerCase().replaceAll(' ', '-')]">{{ item.status }}</span><time>{{ shortDate(item.updatedAt) }}</time></article>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

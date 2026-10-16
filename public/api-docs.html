@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Service Portal API Guide</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    body{padding:2rem;max-width:980px;margin:auto;background:#f4f5fa}.api-page{background:white;border:1px solid #e8e9f1;border-radius:18px;padding:clamp(1.2rem,4vw,2.5rem);box-shadow:0 18px 45px rgba(32,31,61,.08)}h1{letter-spacing:-.04em}h2{margin-top:2rem;font-size:1.1rem}.endpoint{display:grid;grid-template-columns:5rem 1fr;gap:.8rem;padding:.8rem 0;border-top:1px solid #eeeef3}.method{font-weight:850;color:#5142cf}code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}pre{overflow:auto;padding:1rem;border-radius:.75rem;background:#171b2e;color:#ecedfa;font-size:.78rem;line-height:1.55}.back{color:#5142cf;font-weight:750;text-decoration:none}
+  </style>
+</head>
+<body>
+  <main class="api-page">
+    <a class="back" href="/">← Back to the portal</a>
+    <p class="eyebrow" style="margin-top:2rem">REST API</p>
+    <h1>Service Portal API guide</h1>
+    <p>The runnable Node service uses JSON over HTTP. The complete OpenAPI 3.1 document is available at <a href="/api/openapi.json"><code>/api/openapi.json</code></a>.</p>
+    <h2>Endpoints</h2>
+    <div class="endpoint"><span class="method">GET</span><code>/api/health</code></div>
+    <div class="endpoint"><span class="method">GET</span><code>/api/requests?q=&amp;status=&amp;priority=&amp;category=</code></div>
+    <div class="endpoint"><span class="method">POST</span><code>/api/requests</code></div>
+    <div class="endpoint"><span class="method">GET</span><code>/api/requests/{id}</code></div>
+    <div class="endpoint"><span class="method">PATCH</span><code>/api/requests/{id}</code></div>
+    <div class="endpoint"><span class="method">POST</span><code>/api/requests/{id}/comments</code></div>
+    <div class="endpoint"><span class="method">GET</span><code>/api/metrics</code></div>
+    <div class="endpoint"><span class="method">POST</span><code>/api/demo/reset</code></div>
+    <h2>Create example</h2>
+    <pre>curl -X POST http://127.0.0.1:4174/api/requests \
+  -H "content-type: application/json" \
+  -d '{
+    "title": "Search results are not sorted",
+    "description": "The newest requests appear below older items after changing a filter.",
+    "category": "Usability",
+    "priority": "Medium",
+    "requester": {
+      "name": "Demo User",
+      "email": "demo.user@example.test"
+    }
+  }'</pre>
+  </main>
+</body>
+</html>

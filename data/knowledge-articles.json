@@ -1,0 +1,34 @@
+[
+  {
+    "id": "KB-101",
+    "title": "Resetting an account password",
+    "summary": "Steps for requesting a reset, checking spam filters and confirming the account email.",
+    "category": "Account",
+    "updatedAt": "2026-08-12T10:00:00.000Z",
+    "readingMinutes": 3
+  },
+  {
+    "id": "KB-102",
+    "title": "Understanding invoice dates and addresses",
+    "summary": "Where billing profile details are stored and when they appear on generated documents.",
+    "category": "Billing",
+    "updatedAt": "2026-08-18T14:30:00.000Z",
+    "readingMinutes": 4
+  },
+  {
+    "id": "KB-103",
+    "title": "Preparing spreadsheet-friendly CSV files",
+    "summary": "Encoding, delimiters and import settings for data containing non-ASCII characters.",
+    "category": "Data Export",
+    "updatedAt": "2026-08-27T09:15:00.000Z",
+    "readingMinutes": 5
+  },
+  {
+    "id": "KB-104",
+    "title": "Supported attachment types and limits",
+    "summary": "File extensions, size limits and common reasons an upload can be rejected.",
+    "category": "Attachments",
+    "updatedAt": "2026-08-09T08:45:00.000Z",
+    "readingMinutes": 3
+  }
+]

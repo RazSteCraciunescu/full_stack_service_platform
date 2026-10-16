@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" ng-app="legacyQueueApp">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AngularJS Queue · Service Portal</title>
+  <link rel="stylesheet" href="/angularjs/styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+  <script src="/angularjs/app.js" defer></script>
+</head>
+<body ng-controller="QueueController as queue">
+  <header><a href="/">Service Portal</a><span>AngularJS legacy queue</span></header>
+  <main>
+    <div class="notice"><strong>Legacy maintenance example</strong><span>AngularJS is intentionally isolated from the primary application.</span></div>
+    <section class="heading"><p>ANGULARJS 1.8 CLIENT</p><h1>Request triage board</h1><span>A compact controller/service example for reading and updating the same API.</span></section>
+    <div class="toolbar">
+      <input ng-model="queue.query" type="search" placeholder="Search requests" aria-label="Search requests" />
+      <select ng-model="queue.status" aria-label="Filter by status"><option value="">Every status</option><option>Open</option><option>In Progress</option><option>Waiting</option><option>Resolved</option></select>
+      <button ng-click="queue.load()">Reload</button>
+    </div>
+    <p class="error" ng-if="queue.error">{{ queue.error }}</p>
+    <section class="board" aria-live="polite">
+      <article ng-repeat="item in queue.items | filter:queue.searchFilter track by item.id">
+        <div class="card-top"><span>{{ item.id }}</span><b class="priority priority-{{ item.priority | lowercase }}">{{ item.priority }}</b></div>
+        <h2>{{ item.title }}</h2>
+        <p>{{ item.description }}</p>
+        <div class="meta"><span>{{ item.category }}</span><span>{{ item.assignee || 'Unassigned' }}</span></div>
+        <label>Status<select ng-model="item.status" ng-change="queue.update(item)"><option>Backlog</option><option>Open</option><option>In Progress</option><option>Waiting</option><option>Resolved</option><option>Closed</option></select></label>
+      </article>
+      <div class="fallback-card" ng-if="!queue.items.length && !queue.loading">
+        <h2>Waiting for the local API</h2><p>Start <code>node dist/server/src/server.js</code> and reload this page.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

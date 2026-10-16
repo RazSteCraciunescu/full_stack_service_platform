@@ -1,0 +1,11 @@
+{
+  "name": "portfolio/service-request-webhook",
+  "description": "Dependency-free PHP intake endpoint for the Service Request Platform",
+  "type": "project",
+  "require": { "php": ">=8.2" },
+  "autoload": { "psr-4": { "ServicePortal\\": "src/" } },
+  "scripts": {
+    "test": "php tests/validator_test.php",
+    "serve": "php -S 127.0.0.1:8080 -t public"
+  }
+}

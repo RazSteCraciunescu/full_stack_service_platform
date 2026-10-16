@@ -1,0 +1,9 @@
+{
+  "name": "Service Request Portal",
+  "short_name": "Service Portal",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f5fa",
+  "theme_color": "#171b2e",
+  "icons": []
+}

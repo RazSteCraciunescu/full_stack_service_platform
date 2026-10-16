@@ -1,0 +1,4 @@
+# Copy the process entries you need into Laragon's Procfile and adjust PWD.
+; Service Portal Node API: autorun npm start PWD=C:\laragon\www\full-stack-service-request-platform HOST=127.0.0.1 PORT=4174
+; Service Portal PHP Webhook: php -S 127.0.0.1:8080 -t public PWD=C:\laragon\www\full-stack-service-request-platform\services\php-webhook
+; Service Portal Python Reports: uvicorn app.main:app --port 8000 PWD=C:\laragon\www\full-stack-service-request-platform\services\python-reporting

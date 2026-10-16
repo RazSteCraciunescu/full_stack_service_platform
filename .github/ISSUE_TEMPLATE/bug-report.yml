@@ -1,0 +1,46 @@
+name: Bug report
+description: Report reproducible incorrect behavior
+title: "bug: "
+labels: [bug]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Describe the problem in one or two sentences.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Start the application with ...
+        2. Open ...
+        3. Select ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: Windows 11, Node 22, Edge 152
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs or evidence
+      description: Remove secrets and personal data before attaching evidence.

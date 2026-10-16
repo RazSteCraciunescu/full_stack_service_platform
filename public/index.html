@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A local full-stack service request portal with a REST API and several frontend implementations." />
+    <meta name="theme-color" content="#161b2d" />
+    <title>Service Request Portal</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" type="module"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">S</span>
+          <div>
+            <strong>Service Portal</strong>
+            <span>Demo workspace</span>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-item is-active" type="button" data-view-target="dashboard" aria-current="page">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-16v5h6V4h-6Z" /></svg>
+            Overview
+          </button>
+          <button class="nav-item" type="button" data-view-target="requests">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm1 4v2h12V8H6Zm0 5v2h8v-2H6Z" /></svg>
+            Requests
+            <span class="nav-count" id="navRequestCount">0</span>
+          </button>
+          <button class="nav-item" type="button" data-view-target="knowledge">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h13a3 3 0 0 1 3 3v15H7a3 3 0 0 1-3-3V3Zm3 14a1 1 0 0 0 0 2h11v-2H7Zm1-9h8V6H8v2Zm0 4h6v-2H8v2Z" /></svg>
+            Knowledge base
+          </button>
+        </nav>
+
+        <div class="sidebar-section">
+          <p class="sidebar-label">Other clients</p>
+          <a href="/vue/">Vue analytics</a>
+          <a href="/angularjs/">AngularJS queue</a>
+          <a href="/fundamentals/">HTML / Sass / JS</a>
+          <a href="/api-docs.html">REST API guide</a>
+        </div>
+
+        <div class="sidebar-card">
+          <span class="live-dot" aria-hidden="true"></span>
+          <div>
+            <strong>Local API</strong>
+            <span id="apiStatus">Checking connection…</span>
+          </div>
+        </div>
+      </aside>
+
+      <main id="main-content" class="main-content">
+        <header class="topbar">
+          <button id="mobileMenuButton" class="icon-button mobile-only" type="button" aria-label="Open navigation" aria-expanded="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h16v2H4v-2Z" /></svg>
+          </button>
+          <label class="global-search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m19.7 18.3-4.1-4.1a7 7 0 1 0-1.4 1.4l4.1 4.1 1.4-1.4ZM5 10a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z" /></svg>
+            <span class="visually-hidden">Search requests</span>
+            <input id="globalSearch" type="search" placeholder="Search ID, title or requester" autocomplete="off" />
+            <kbd>/</kbd>
+          </label>
+          <div class="topbar-actions">
+            <button id="resetButton" class="text-button" type="button">Reset demo</button>
+            <button id="openCreateButton" class="primary-button" type="button">
+              <span aria-hidden="true">＋</span>
+              New request
+            </button>
+            <button class="avatar-button" type="button" aria-label="Demo user profile">RC</button>
+          </div>
+        </header>
+
+        <section id="dashboardView" class="view" aria-labelledby="dashboardTitle">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">Operations snapshot</p>
+              <h1 id="dashboardTitle">Good afternoon</h1>
+              <p>Here is what needs attention in the service queue.</p>
+            </div>
+            <p class="date-chip" id="currentDate"></p>
+          </div>
+
+          <div class="metric-grid" id="metricGrid" aria-live="polite">
+            <article class="metric-card skeleton"></article>
+            <article class="metric-card skeleton"></article>
+            <article class="metric-card skeleton"></article>
+            <article class="metric-card skeleton"></article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel queue-panel" aria-labelledby="priorityQueueTitle">
+              <div class="panel-header">
+                <div>
+                  <p class="panel-kicker">Live queue</p>
+                  <h2 id="priorityQueueTitle">Recently updated requests</h2>
+                </div>
+                <button class="link-button" type="button" data-view-target="requests">View all</button>
+              </div>
+              <div id="dashboardQueue" class="queue-list" aria-live="polite"></div>
+            </section>
+
+            <aside class="panel workload-panel" aria-labelledby="workloadTitle">
+              <div class="panel-header">
+                <div>
+                  <p class="panel-kicker">Workload</p>
+                  <h2 id="workloadTitle">Requests by category</h2>
+                </div>
+              </div>
+              <div id="categoryChart" class="bar-chart"></div>
+              <div class="mini-note">
+                <span class="mini-note-icon" aria-hidden="true">↗</span>
+                <div>
+                  <strong id="workloadNoteTitle">Queue looks balanced</strong>
+                  <p id="workloadNoteText">Category distribution is based on the current demo data.</p>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="requestsView" class="view" hidden aria-labelledby="requestsTitle">
+          <div class="page-heading compact-heading">
+            <div>
+              <p class="eyebrow">Request management</p>
+              <h1 id="requestsTitle">Service requests</h1>
+              <p>Filter the queue, inspect details and update the workflow.</p>
+            </div>
+            <button class="secondary-button" id="exportButton" type="button">Export visible CSV</button>
+          </div>
+
+          <section class="panel request-table-panel">
+            <div class="filter-row" aria-label="Request filters">
+              <label>
+                <span>Status</span>
+                <select id="statusFilter">
+                  <option value="">All statuses</option>
+                  <option>Backlog</option>
+                  <option>Open</option>
+                  <option>In Progress</option>
+                  <option>Waiting</option>
+                  <option>Resolved</option>
+                  <option>Closed</option>
+                </select>
+              </label>
+              <label>
+                <span>Priority</span>
+                <select id="priorityFilter">
+                  <option value="">All priorities</option>
+                  <option>Low</option>
+                  <option>Medium</option>
+                  <option>High</option>
+                  <option>Urgent</option>
+                </select>
+              </label>
+              <label>
+                <span>Category</span>
+                <select id="categoryFilter">
+                  <option value="">All categories</option>
+                  <option>Account</option>
+                  <option>Attachments</option>
+                  <option>Billing</option>
+                  <option>Data Export</option>
+                  <option>Documentation</option>
+                  <option>Feature Request</option>
+                  <option>Notifications</option>
+                  <option>Usability</option>
+                </select>
+              </label>
+              <button id="clearFiltersButton" class="text-button filter-reset" type="button">Clear filters</button>
+              <span class="result-count" id="requestResultCount">0 requests</span>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Request</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Assignee</th>
+                    <th scope="col">Updated</th>
+                    <th scope="col"><span class="visually-hidden">Open</span></th>
+                  </tr>
+                </thead>
+                <tbody id="requestTableBody"></tbody>
+              </table>
+              <div id="requestEmptyState" class="empty-state" hidden>
+                <span aria-hidden="true">⌕</span>
+                <h2>No matching requests</h2>
+                <p>Try a broader search or clear one of the filters.</p>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section id="knowledgeView" class="view" hidden aria-labelledby="knowledgeTitle">
+          <div class="page-heading compact-heading">
+            <div>
+              <p class="eyebrow">Self-service content</p>
+              <h1 id="knowledgeTitle">Knowledge base</h1>
+              <p>Small examples of searchable support content returned by the API.</p>
+            </div>
+          </div>
+          <div id="knowledgeGrid" class="knowledge-grid"></div>
+        </section>
+      </main>
+    </div>
+
+    <aside id="detailPanel" class="detail-panel" role="dialog" aria-modal="true" aria-labelledby="detailTitle" aria-hidden="true">
+      <div class="detail-header">
+        <div>
+          <p id="detailId" class="eyebrow"></p>
+          <h2 id="detailTitle">Request details</h2>
+        </div>
+        <button id="closeDetailButton" class="icon-button" type="button" aria-label="Close request details">×</button>
+      </div>
+      <div id="detailContent" class="detail-content"></div>
+    </aside>
+    <div id="detailBackdrop" class="detail-backdrop" aria-hidden="true" hidden></div>
+
+    <dialog id="createDialog" class="request-dialog" aria-labelledby="createDialogTitle">
+      <form id="createRequestForm" method="dialog" novalidate>
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">Create request</p>
+            <h2 id="createDialogTitle">Tell the team what happened</h2>
+          </div>
+          <button id="closeCreateButton" class="icon-button" type="button" aria-label="Close new request form">×</button>
+        </div>
+        <div id="formErrorSummary" class="form-error-summary" role="alert" hidden></div>
+        <div class="form-grid">
+          <label class="field field-wide">
+            <span>Title</span>
+            <input name="title" maxlength="120" required placeholder="A short, specific summary" />
+            <small>8–120 characters</small>
+          </label>
+          <label class="field field-wide">
+            <span>Description</span>
+            <textarea name="description" rows="5" maxlength="2000" required placeholder="What did you expect, and what happened instead?"></textarea>
+            <small>Include enough detail for someone else to reproduce or understand the request.</small>
+          </label>
+          <label class="field">
+            <span>Category</span>
+            <select name="category" required>
+              <option value="">Choose one</option>
+              <option>Account</option>
+              <option>Attachments</option>
+              <option>Billing</option>
+              <option>Data Export</option>
+              <option>Documentation</option>
+              <option>Feature Request</option>
+              <option>Notifications</option>
+              <option>Usability</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Priority</span>
+            <select name="priority" required>
+              <option>Low</option>
+              <option selected>Medium</option>
+              <option>High</option>
+              <option>Urgent</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Your name</span>
+            <input name="requesterName" value="Demo User" required />
+          </label>
+          <label class="field">
+            <span>Email</span>
+            <input name="requesterEmail" type="email" value="demo.user@example.test" required />
+          </label>
+          <label class="field field-wide">
+            <span>Tags <em>optional</em></span>
+            <input name="tags" placeholder="accessibility, mobile, export" />
+          </label>
+        </div>
+        <div class="dialog-actions">
+          <button id="cancelCreateButton" class="text-button" type="button">Cancel</button>
+          <button class="primary-button" type="submit">Create request</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+    <noscript>This interface needs JavaScript. The REST API remains available at <code>/api/requests</code>.</noscript>
+  </body>
+</html>

@@ -1,0 +1,5 @@
+@use "tokens" as *;
+.card { background: $paper; border: 1px solid $line; border-radius: $radius; padding: 20px; }
+.request-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 16px 0; border-top: 1px solid $line; }
+.badge { align-self: start; border-radius: 999px; padding: 5px 9px; background: #f3e8e2; color: #8d3b25; font-size: .75rem; font-weight: 700; }
+button, input, select { font: inherit; border: 1px solid #cbd5d1; border-radius: 8px; padding: 10px; background: $paper; }

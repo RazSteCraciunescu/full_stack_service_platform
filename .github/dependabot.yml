@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule: { interval: monthly }
+  - package-ecosystem: npm
+    directory: /apps/react-client
+    schedule: { interval: monthly }
+  - package-ecosystem: npm
+    directory: /apps/vue-dashboard
+    schedule: { interval: monthly }
+  - package-ecosystem: npm
+    directory: /apps/angularjs-admin
+    schedule: { interval: monthly }
+  - package-ecosystem: composer
+    directory: /services/laravel-api
+    schedule: { interval: monthly }
+  - package-ecosystem: pip
+    directory: /services/python-reporting
+    schedule: { interval: monthly }
+  - package-ecosystem: docker
+    directory: /
+    schedule: { interval: monthly }
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: monthly }

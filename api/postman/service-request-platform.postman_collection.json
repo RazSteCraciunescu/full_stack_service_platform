@@ -1,0 +1,63 @@
+{
+  "info": {
+    "name": "Service Request Platform",
+    "description": "Ready-to-run requests for the local Node REST API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://127.0.0.1:4174" },
+    { "key": "requestId", "value": "SR-1042" }
+  ],
+  "item": [
+    {
+      "name": "System",
+      "item": [
+        {
+          "name": "Health",
+          "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{baseUrl}}/api/health" },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('returns 200', () => pm.response.to.have.status(200));", "pm.test('service is healthy', () => pm.expect(pm.response.json().status).to.eql('ok'));" ] } }]
+        },
+        { "name": "Reset demo data", "request": { "method": "POST", "url": "{{baseUrl}}/api/demo/reset" } }
+      ]
+    },
+    {
+      "name": "Requests",
+      "item": [
+        { "name": "List open requests", "request": { "method": "GET", "url": "{{baseUrl}}/api/requests?status=Open" } },
+        { "name": "Get request", "request": { "method": "GET", "url": "{{baseUrl}}/api/requests/{{requestId}}" } },
+        {
+          "name": "Create request",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Export report is missing owner column\",\n  \"description\": \"The monthly CSV export omits the owner column for requests that were closed last week.\",\n  \"category\": \"Data Export\",\n  \"priority\": \"Medium\",\n  \"requester\": {\n    \"name\": \"Alex Morgan\",\n    \"email\": \"alex.morgan@example.test\"\n  },\n  \"tags\": [\"csv\", \"reporting\"]\n}"
+            },
+            "url": "{{baseUrl}}/api/requests"
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('created', () => pm.response.to.have.status(201));", "if (pm.response.code === 201) pm.collectionVariables.set('requestId', pm.response.json().id);" ] } }]
+        },
+        {
+          "name": "Update request",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"In Progress\",\n  \"assignee\": \"Jordan Lee\"\n}" },
+            "url": "{{baseUrl}}/api/requests/{{requestId}}"
+          }
+        },
+        {
+          "name": "Add comment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"author\": \"Jordan Lee\",\n  \"body\": \"Reproduced locally and added the request to the next triage.\"\n}" },
+            "url": "{{baseUrl}}/api/requests/{{requestId}}/comments"
+          }
+        }
+      ]
+    },
+    { "name": "Reporting", "item": [{ "name": "Metrics", "request": { "method": "GET", "url": "{{baseUrl}}/api/metrics" } }] }
+  ]
+}

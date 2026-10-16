@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en" ng-app="legacyAdmin">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Legacy Queue · AngularJS</title><link rel="stylesheet" href="src/styles.css" /></head>
+<body ng-controller="QueueController as vm">
+  <main class="legacy-shell">
+    <header><div><span class="eyebrow">AngularJS 1.8 maintenance view</span><h1>Legacy support queue</h1><p>This client demonstrates safe work in an older front-end stack without making it the primary architecture.</p></div><a href="http://127.0.0.1:4174/">Main portal</a></header>
+    <section class="toolbar"><input ng-model="vm.search" placeholder="Filter queue" aria-label="Filter queue" /><select ng-model="vm.status"><option value="">All statuses</option><option>Open</option><option>In Progress</option><option>Waiting</option><option>Resolved</option></select><button ng-click="vm.load()">Refresh</button></section>
+    <p class="error" ng-if="vm.error">{{ vm.error }}</p>
+    <section class="queue"><article role="button" tabindex="0" ng-repeat="item in vm.requests | filter:vm.search | filter:{status:vm.status}" ng-class="{'selected': vm.selected.id === item.id}" ng-click="vm.select(item)" ng-keydown="$event.key === 'Enter' && vm.select(item)"><small>{{ item.id }} · {{ item.category }}</small><h2>{{ item.title }}</h2><div><span>{{ item.status }}</span><strong>{{ item.priority }}</strong></div></article></section>
+    <aside class="editor" ng-if="vm.selected.id"><button class="close" aria-label="Close editor" ng-click="vm.selected = {}">×</button><small>{{ vm.selected.id }}</small><h2>{{ vm.selected.title }}</h2><p>{{ vm.selected.description }}</p><label>Status<select ng-model="vm.selected.status"><option>Backlog</option><option>Open</option><option>In Progress</option><option>Waiting</option><option>Resolved</option><option>Closed</option></select></label><label>Assignee<input ng-model="vm.selected.assignee" placeholder="Unassigned" /></label><button ng-click="vm.save()" ng-disabled="vm.saving">{{ vm.saving ? 'Saving…' : 'Save changes' }}</button></aside>
+  </main>
+  <script src="node_modules/angular/angular.min.js"></script><script src="src/app.module.js"></script><script src="src/request.service.js"></script><script src="src/queue.controller.js"></script>
+</body></html>

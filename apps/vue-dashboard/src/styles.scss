@@ -1,0 +1,30 @@
+$ink: #162229; $muted: #68777f; $line: #dfe6e9; $paper: #fff; $accent: #138a72;
+* { box-sizing: border-box; }
+body { margin: 0; color: $ink; background: #eef3f2; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+button, select { font: inherit; }
+.analytics-shell { max-width: 1280px; margin: auto; padding: 52px 28px 80px; }
+header, .panel-heading { display: flex; justify-content: space-between; align-items: start; gap: 20px; }
+h1 { font-size: clamp(2.4rem, 5vw, 4.4rem); letter-spacing: -.06em; margin: 5px 0; }
+h2 { margin: 4px 0 22px; }
+header p { color: $muted; }
+.eyebrow { text-transform: uppercase; font-size: .72rem; letter-spacing: .13em; color: $accent; font-weight: 800; }
+.header-actions { display: flex; gap: 8px; }
+a, button, select { border: 1px solid $line; background: $paper; color: $ink; padding: 10px 13px; border-radius: 9px; text-decoration: none; }
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px; margin: 35px 0 16px; }
+.metrics article, .panel { background: $paper; border: 1px solid $line; border-radius: 16px; padding: 22px; }
+.metrics article { display: grid; gap: 5px; }
+.metrics span { color: $muted; }
+.metrics strong { font-size: 2rem; }
+.dashboard-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 16px; }
+.bars { display: grid; gap: 14px; }
+.bar-row { display: grid; grid-template-columns: 125px 1fr 24px; gap: 9px; align-items: center; font-size: .85rem; }
+.bar-row > div { height: 9px; background: #e9efed; border-radius: 9px; overflow: hidden; }
+.bar-row i { display: block; height: 100%; background: $accent; border-radius: 9px; }
+.queue-panel ul { list-style: none; padding: 0; margin: 0; }
+.queue-panel li { display: flex; justify-content: space-between; gap: 12px; padding: 14px 0; border-top: 1px solid #edf0f1; }
+.queue-panel li div { display: grid; gap: 3px; }
+.queue-panel small { color: $muted; }
+.priority { align-self: center; border-radius: 999px; padding: 5px 9px; font-size: .72rem; font-weight: 750; background: #eef2f2; }
+.priority.high, .priority.urgent { background: #fff0dc; color: #9b5718; }
+.error { background: #ffebeb; padding: 12px; border-radius: 9px; color: #9e3030; }
+@media (max-width: 800px) { .metrics { grid-template-columns: 1fr 1fr; } .dashboard-grid { grid-template-columns: 1fr; } header { flex-direction: column; } }

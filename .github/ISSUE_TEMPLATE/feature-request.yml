@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest a focused improvement
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Explain the user or developer problem before proposing implementation details.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance examples
+      placeholder: |
+        - Given ... when ... then ...
+        - Given ... when ... then ...
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
